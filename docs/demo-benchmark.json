@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "created_utc": "2026-10-04T12:40:00.837590+00:00",
+  "mode": "demo",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.9.6",
+  "stories_requested": 4,
+  "stories_completed": 4,
+  "scenes": [
+    {
+      "story": 1,
+      "theme": "forest",
+      "scene_id": 1,
+      "core_s": 0.002,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.002,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 1,
+      "theme": "forest",
+      "scene_id": 2,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 1,
+      "theme": "forest",
+      "scene_id": 3,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 1,
+      "theme": "forest",
+      "scene_id": 4,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 1,
+      "theme": "forest",
+      "scene_id": 5,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 2,
+      "theme": "space",
+      "scene_id": 1,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 2,
+      "theme": "space",
+      "scene_id": 2,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 2,
+      "theme": "space",
+      "scene_id": 3,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 2,
+      "theme": "space",
+      "scene_id": 4,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 2,
+      "theme": "space",
+      "scene_id": 5,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 3,
+      "theme": "ocean",
+      "scene_id": 1,
+      "core_s": 0.0,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 3,
+      "theme": "ocean",
+      "scene_id": 2,
+      "core_s": 0.0,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 3,
+      "theme": "ocean",
+      "scene_id": 3,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 3,
+      "theme": "ocean",
+      "scene_id": 4,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 3,
+      "theme": "ocean",
+      "scene_id": 5,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 4,
+      "theme": "dragons",
+      "scene_id": 1,
+      "core_s": 0.0,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 4,
+      "theme": "dragons",
+      "scene_id": 2,
+      "core_s": 0.0,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 4,
+      "theme": "dragons",
+      "scene_id": 3,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 4,
+      "theme": "dragons",
+      "scene_id": 4,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    },
+    {
+      "story": 4,
+      "theme": "dragons",
+      "scene_id": 5,
+      "core_s": 0.001,
+      "vision_s": 0.0,
+      "tunes_s": 0.0,
+      "total_s": 0.001,
+      "rejections": 0,
+      "source": "demo"
+    }
+  ],
+  "summary": {
+    "mean_scene_s": 0.001,
+    "max_scene_s": 0.002,
+    "rejections": 0,
+    "fallback_scenes": 0
+  },
+  "limitations": [
+    "No peak-memory measurement.",
+    "Curated images, not diffusion.",
+    "Demo timings do not predict model performance.",
+    "Model quality and safety require separate evaluation."
+  ]
+}

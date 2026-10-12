@@ -1,0 +1,31 @@
+{
+  "status": "unselected",
+  "models": [
+    {
+      "component": "DreamCore",
+      "model_name": null,
+      "version": null,
+      "source": null,
+      "license": null,
+      "quantization": null,
+      "runtime": "llama.cpp",
+      "runtime_version": null,
+      "sha256": null,
+      "download_date": null,
+      "jetson_benchmark": null
+    },
+    {
+      "component": "DreamVision",
+      "model_name": null,
+      "status": "curated-art-fallback"
+    },
+    {
+      "component": "DreamTunes",
+      "model_name": null,
+      "runtime": "Piper (optional)",
+      "voice_license": null,
+      "sha256": null,
+      "status": "unselected"
+    }
+  ]
+}

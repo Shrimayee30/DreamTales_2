@@ -1,0 +1,26 @@
+{
+  "app_version": "0.3.0",
+  "recorded": "2026-10-06",
+  "models": [
+    {
+      "component": "DreamCore",
+      "provider": "Ollama",
+      "name": "mistral:7b-instruct",
+      "digest": "6577803aa9a036369e481d648a2baebb381ebc6e897f2bb9a766a2aa7bfbc1cf",
+      "quantization": "Q4_K_M",
+      "parameter_size": "7.2B",
+      "status": "Existing local installation; exercised on development Mac; not Jetson-validated"
+    },
+    {
+      "component": "DreamTunes",
+      "name": "Kokoro v1.0 ONNX",
+      "runtime": "kokoro-onnx 0.6.1",
+      "voice": "af_heart",
+      "speed": 0.88,
+      "source": "https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.1",
+      "sha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+      "voices_sha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+      "status": "Downloaded and synthesized locally; CPU worker releases memory per scene"
+    }
+  ]
+}
