@@ -52,6 +52,26 @@ Performance evaluation	Custom Python benchmarking
 Data	JSON, in-memory session state
 Environment	Python virtual environments, shell scripts
 
+
+| Component | Evaluation Metric | Current Observation / Provisional Target |
+|---|---|---|
+| DreamSync | Initial two-scene preparation | ~40 seconds (observed) |
+| DreamSync | Average preparation per initial scene | ~20 seconds (40 ÷ 2; not independently measured) |
+| DreamSync | Playback continuity | Target ≥95% stall-free transitions |
+| DreamSync | Story completion rate | Target ≥95% |
+| DreamCore | Structural compliance | Target ≥95% |
+| DreamCore | Narrative coherence | Target ≥4.0/5 |
+| DreamCore | Character consistency | Target ≥95% |
+| DreamCore | Age appropriateness | Target ≥95% |
+| DreamCore | Moral alignment | Target ≥4.0/5 |
+| DreamTunes | Narration accuracy | Target WER ≤5% |
+| DreamTunes | Voice naturalness | Target ≥4.0/5 |
+| DreamVision | Image–text alignment | Target ≥4.0/5 |
+| DreamVision | Visual consistency | Target ≥4.0/5 |
+| Overall | Unsafe content escape rate | Target 0% in evaluated cases |
+| Overall | Confidence score | Not currently implemented or calibrated |
+
+
 ## Install on another machine
 
 The web server requires Python 3.9+. The Kokoro worker requires Python 3.10–3.12 and its own environment.
