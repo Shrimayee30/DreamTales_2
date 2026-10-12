@@ -28,6 +28,30 @@ Open http://127.0.0.1:8765. The current setup uses the already-installed Ollama 
 
 Background sounds are original procedural audio synthesized through Web Audio on the device; they are not field recordings. DreamVision composes a distinct local SVG for each scene, using its cast, theme, and weather. These are procedural vector illustrations, not diffusion-model images.
 
+## Technology Stack
+
+| Component | Technology Stack | Responsibilities |
+|---|---|---|
+| **DreamSync** | Python, JavaScript, in-memory session management, asynchronous/concurrent processing, rule-based validation | Central orchestrator; input/output screening, story state, two-scene lookahead, background generation, media coordination, playback control and recovery. |
+| **DreamCore** | Python, Mistral 7B Instruct, Ollama, optional llama.cpp, JSON structured outputs, custom `morals.json` dataset | Generates five-scene stories, character and scene context, moral-guided narratives, and validates structural constraints. |
+| **DreamTunes** | Python, Kokoro TTS, ONNX Runtime, Piper (fallback), Web Speech API (fallback), Web Audio API | Generates narration, procedural ambient sound, audio mixing, fades, and synchronized playback. |
+| **DreamVision** | OpenAI GPT Image 2 API, Python, SVG, PNG, local procedural illustration fallback | Generates storybook illustrations from validated scene descriptions, with local fallback when hosted image generation is unavailable. |
+
+**Frontend:** HTML, CSS, JavaScript  
+**Testing:** pytest, Node.js test runner, custom benchmarking  
+**Runtime:** Local Python web server, Ollama, isolated Python virtual environments
+
+Supporting technologies
+Category	Technologies
+Frontend	HTML, CSS, JavaScript
+Backend	Python, local web server
+LLM inference	Ollama / llama.cpp
+Model inference	ONNX Runtime
+Testing	pytest, Node.js built-in test runner
+Performance evaluation	Custom Python benchmarking
+Data	JSON, in-memory session state
+Environment	Python virtual environments, shell scripts
+
 ## Install on another machine
 
 The web server requires Python 3.9+. The Kokoro worker requires Python 3.10–3.12 and its own environment.
