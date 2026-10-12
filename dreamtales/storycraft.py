@@ -66,13 +66,3 @@ def check_progress(scene, history):
         similarity=SequenceMatcher(None,current,old,autojunk=False).ratio()
         if similarity >= .78 or overlap >= .5:
             raise RepeatedScene(f'Too similar to scene {previous.scene_id}; advance the current story beat.')
-
-def repeat_score(scene, history):
-    """Maximum sentence/scene token similarity, 0–100; not a semantic verdict."""
-    scores = [0.0]
-    for previous in history:
-        scores.append(SequenceMatcher(None, words(scene.story_text), words(previous.story_text), autojunk=False).ratio())
-        for current in sentences(scene.story_text):
-            for old in sentences(previous.story_text):
-                scores.append(SequenceMatcher(None, current, old, autojunk=False).ratio())
-    return round(max(scores) * 100, 1)
