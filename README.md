@@ -3,6 +3,9 @@
 DreamTales 0.4 turns a child's imaginary idea into a locally generated five-scene bedtime story. The home screen asks **“What do you want to dream about tonight?”** DreamCore writes each scene in three or four sentences. A child can type a new direction—such as “Please add Mr Rabbit”—while listening, and it begins in the next scene whose generation has not started.
 <img width="2138" height="735" alt="image" src="https://github.com/user-attachments/assets/3d25b2e7-11eb-455a-8b15-295efb9eceb3" />
 
+<img width="946" height="712" alt="dreamtales_simple_architecture" src="https://github.com/user-attachments/assets/de316291-01c7-48db-995d-8d0321b85cb6" />
+
+
 ## Start on this computer
 
 ```bash
