@@ -36,10 +36,11 @@ def test_local_generation_contract(monkeypatch,core):
 def test_outline_contract_for_both_local_providers(monkeypatch):
     async def scenario():
         config=StoryConfig(dream='Friends sharing a toy')
-        events=[f'The friends make progress in step number {n} together.' for n in range(1,6)]
+        events=['Jack the fox wants to share lunch with Robert.', 'Their picnic blanket is too small for both friends.', 'Robert suggests joining two little blankets to make room.', 'Jack and Robert spread their blankets beside each other.', 'Both friends enjoy lunch together on their roomy picnic spot.']
         async def handler(request):
             payload=json.loads(request.content)
-            assert 'Sharing and taking turns' in payload['messages'][1]['content']
+            from dreamtales.storycraft import LESSONS
+            assert json.loads(payload['messages'][1]['content'])['lesson']==LESSONS[config._lesson_id]
             if request.url.path=='/api/chat':
                 assert payload['format']['properties']['events']['minItems']==5
                 return httpx.Response(200,json={'message':{'content':json.dumps({'events':events})}})

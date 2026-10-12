@@ -115,7 +115,7 @@ Open **Story settings · advanced** before starting a story. Temperature (0–1.
 
 ## Stories with a purpose
 
-Each story now follows a five-step arc and teaches a practical lesson through the characters’ choices. Short dialogue is encouraged throughout. A separate The End slide displays the moral after scene five finishes. Earlier scenes are checked for repeated or closely matching text before a new scene reaches narration. Similar drafts are retried with a request for a new action; semantic repetition can still require further evaluation.
+Each story randomly selects one of 20 original morals from `dreamtales/data/morals.json` and keeps it throughout the session. This is a runtime guidance dataset, not fine-tuning data. The five chronological stages are introduction → problem → proposed solution → trying the solution → success. Short dialogue is encouraged throughout. A separate The End slide displays the selected moral after scene five finishes. Repetitive outline events, similar scene drafts, and individual recycled sentences are checked before playback. Invalid drafts are retried up to three times; these textual checks do not guarantee semantic coherence.
 
 The story outline is planned once before the initial two scenes. This adds a little startup time but gives later scenes specific new events to follow, rather than repeatedly expanding the same moment.
 
@@ -145,3 +145,5 @@ The player has a 0.60×–1.50× narration speed slider. Recorded Kokoro/Piper a
 Read-along highlighting uses approximate word-length-weighted positions against recorded audio time, so changing speed and pausing do not advance the highlight independently of playback. Device voices use browser word-boundary events when available. This is not forced alignment; individual word timing may drift. Highlighting can be switched off.
 
 Advanced generation settings sit below the story button. Rejected prompts and directions open an accessible safety dialog with a clear recovery action; the underlying rule-based safety coverage is unchanged.
+
+Scene 1 must start with “Once upon a time,” and is instructed to introduce only named characters and the setting. The goal and obstacle begin in scene 2. Later scenes cannot restart with the opening phrase. Exact repeated sentences (including short dialogue) and closely reworded longer sentences are rejected before media generation. These textual checks do not guarantee semantic progression for every generated story.

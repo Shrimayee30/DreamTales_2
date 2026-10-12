@@ -6,7 +6,7 @@ from typing import Optional
 
 from .schema import Scene, StoryConfig
 from .core import REPAIR_HINT
-from .storycraft import check_progress, RepeatedScene, lesson_for, LESSONS
+from .storycraft import check_progress, RepeatedScene, LESSONS
 from .safety import check_scene, UnsafeScene, SAFETY_MESSAGE
 from .soundscape import scene_sounds
 
@@ -104,7 +104,7 @@ class DreamSync:
                     check_scene(candidate)
                     check_progress(candidate, history)
                     if candidate.ending:
-                        moral = LESSONS[lesson_for(session.config.dream)]
+                        moral = LESSONS[session.config._lesson_id]
                         candidate = Scene.model_validate({**candidate.model_dump(), 'moral':moral})
                         check_scene(candidate)
                     candidate.ambience = scene_sounds(candidate)
@@ -113,7 +113,9 @@ class DreamSync:
                     raise
                 except Exception as exc:
                     rejected += 1
-                    repair = (' The last draft repeated an earlier scene. Follow this scene purpose with a NEW action and result. Do not paraphrase previous events.' if isinstance(exc, RepeatedScene) else ' The last draft could not be validated. Write exactly three short sentences, at most 12 words each. Return all five required JSON fields.')
+                    repair = (' The last draft repeated an earlier scene. Follow this scene purpose with a NEW action and result. Rejected draft: ' + candidate.story_text + ' . Do not paraphrase previous events.' if isinstance(exc, RepeatedScene) else ' The last draft could not be validated. Write exactly three short sentences, at most 12 words each. Return all five required JSON fields.')
+                    if n == 1:
+                        repair += ' Start with Once upon a time, and describe ONLY named characters and the setting. Save the goal and problem for scene 2.'
                     fields = [(e['loc'], e['type']) for e in exc.errors()] if hasattr(exc, 'errors') else []
                     log.warning('core_rejected type=%s scene=%s attempt=%s fields=%s', type(exc).__name__, n, attempt + 1, fields)
                 finally:

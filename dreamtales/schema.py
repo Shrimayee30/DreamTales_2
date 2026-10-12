@@ -1,7 +1,8 @@
 import re
 from typing import Literal
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, field_validator, model_validator
 from .safety import sanitize_request
+from .storycraft import choose_lesson
 
 Theme = Literal['forest', 'space', 'ocean', 'dragons']
 Ambience = Literal['rain', 'wind', 'night', 'ocean', 'thunder']
@@ -15,6 +16,8 @@ class GenerationSettings(StrictModel):
     max_tokens: int = Field(default=400, ge=300, le=700)
 
 class StoryConfig(StrictModel):
+    # Selected once, reused across planning, retries, and all five scenes.
+    _lesson_id: str = PrivateAttr(default_factory=choose_lesson)
     dream: str = Field(min_length=5, max_length=500)
     length: Literal[5] = 5
     generation: GenerationSettings = Field(default_factory=GenerationSettings)

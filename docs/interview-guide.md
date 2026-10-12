@@ -55,7 +55,7 @@ Text generation for the next scene can also overlap media generation for the cur
 
 - The five-scene limit bounds history and gives the story a clear ending. It is not context compression or a guarantee against overflow; model requests still include completed scenes.
 - Child directions affect the next unstarted scene. A scene already being generated or prepared is not rewritten.
-- Lessons are selected from predefined themes by prompt keywords, defaulting to kindness. The language model writes events intended to demonstrate the lesson.
+- One moral is randomly selected per story from 20 curated entries and retained across all scenes and retries. The five stages are introduction, problem, proposed solution, trying the solution, and success. The language model writes events intended to demonstrate the selected lesson.
 - Repetition checks catch exact and closely reworded text, not every semantic repetition.
 - Sessions, images, outline and prepared scenes are kept in memory. Narration WAVs are temporary local files. There is no database, account system, RAG pipeline or fine-tuning.
 - Hosted images currently have a 60-second application deadline and local-art fallback. API credentials, model access, cost, image consistency and live latency remain to be verified.
