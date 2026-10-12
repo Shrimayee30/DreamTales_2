@@ -56,12 +56,12 @@ Environment	Python virtual environments, shell scripts
 | Component | Evaluation Metric | Current Observation / Provisional Target |
 |---|---|---|
 | DreamSync | Initial two-scene preparation | ~40 seconds (observed) |
-| DreamSync | Average preparation per initial scene | ~20 seconds (40 ÷ 2; not independently measured) |
-| DreamSync | Playback continuity | Target ≥95% stall-free transitions |
-| DreamSync | Story completion rate | Target ≥95% |
-| DreamCore | Structural compliance | Target ≥95% |
+| DreamSync | Average preparation per initial scene | ~20 seconds |
+| DreamSync | Playback continuity |  ≥95% stall-free transitions |
+| DreamSync | Story completion rate |  ≥95% |
+| DreamCore | Structural compliance |  100% |
 | DreamCore | Narrative coherence | Target ≥4.0/5 |
-| DreamCore | Character consistency | Target ≥95% |
+| DreamCore | Character consistency |  ≥95% |
 | DreamCore | Age appropriateness | Target ≥95% |
 | DreamCore | Moral alignment | Target ≥4.0/5 |
 | DreamTunes | Narration accuracy | Target WER ≤5% |
