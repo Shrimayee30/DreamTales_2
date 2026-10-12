@@ -4,11 +4,12 @@ DreamTales 0.4 turns a child's imaginary idea into a locally generated five-scen
 
 Architecture diagrams:
 <img width="2138" height="735" alt="image" src="https://github.com/user-attachments/assets/3d25b2e7-11eb-455a-8b15-295efb9eceb3" />
-Data flow diagram
+Fig 1: Data flow diagram
 
 
 <img width="946" height="712" alt="dreamtales_simple_architecture" src="https://github.com/user-attachments/assets/de316291-01c7-48db-995d-8d0321b85cb6" />
-Block diagram
+
+Fig 2: Block diagram
 
 
 ## Start on this computer
