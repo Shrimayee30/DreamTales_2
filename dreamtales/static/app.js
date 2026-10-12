@@ -6,6 +6,45 @@ let session = null, current = null, timer = null, nextTimer = null, generation =
 let directionTarget = null;
 let audio = null, utterance = null, playbackId = 0, speaking = false, paused = false, muted = false;
 let queueing = false, finished = false;
+let wordSpans = [], wordStarts = [], wordWeights = [], highlightedWord = -1;
+function narrationSpeed() { return Math.min(1.5, Math.max(.6, Number($('narration-speed').value) || 1)); }
+function highlightWord(index) {
+  if (!$('read-along').checked) index = -1;
+  if (index === highlightedWord) return;
+  if (wordSpans[highlightedWord]) wordSpans[highlightedWord].classList.toggle('spoken-word', false);
+  highlightedWord = index;
+  if (wordSpans[index]) wordSpans[index].classList.toggle('spoken-word', true);
+}
+function renderWords(text) {
+  wordSpans = []; wordStarts = []; wordWeights = []; highlightedWord = -1;
+  $('scene-text').textContent = '';
+  let offset = 0, total = 0;
+  for (const part of text.split(/(\s+)/)) {
+    if (!part) continue;
+    if (/^\s+$/.test(part)) $('scene-text').append(document.createTextNode(part));
+    else {
+      const span = document.createElement('span'); span.textContent = part;
+      wordStarts.push(offset); wordWeights.push(total);
+      total += Math.max(2, part.replace(/[^a-z0-9]/gi, '').length) + (/[.!?]["”’']?$/.test(part) ? 4 : /[,;:]$/.test(part) ? 2 : 0);
+      wordSpans.push(span); $('scene-text').append(span);
+    }
+    offset += part.length;
+  }
+  wordWeights.push(total);
+}
+function followAudio() {
+  if (!audio || !speaking || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const progress = Math.min(.999999, Math.max(0, audio.currentTime / audio.duration));
+  const position = progress * wordWeights[wordSpans.length];
+  let index = 0;
+  while (index + 1 < wordSpans.length && wordWeights[index + 1] <= position) index++;
+  highlightWord(index);
+}
+function showSafety(message) {
+  $('safety-message').textContent = message;
+  if (!$('safety-dialog').open) $('safety-dialog').showModal();
+}
+
 const phases = {planning:'Planning a little adventure…',queued:'Your dream is next…',writing:'Dreaming up your story…',painting:'Finding a little moonlight…',narrating:'Preparing a gentle voice…',assembling:'Almost time to settle in…'};
 function screen(name) { screens.forEach(id => {$(id).hidden = id !== name;}); }
 async function api(path, options = {}) {
@@ -25,9 +64,9 @@ async function api(path, options = {}) {
 }
 function clearNext() { clearTimeout(nextTimer); nextTimer = null; }
 function stopAudio() {
-  ++playbackId; clearNext();
-  if (audio) { audio.onended = null; audio.onerror = null; audio.pause(); audio = null; }
-  if (utterance) {utterance.onend = null; utterance.onerror = null;}
+  ++playbackId; clearNext(); highlightWord(-1);
+  if (audio) { audio.onended = null; audio.onerror = null; audio.ontimeupdate = null; audio.pause(); audio = null; }
+  if (utterance) {utterance.onend = null; utterance.onerror = null; utterance.onboundary = null;}
   window.speechSynthesis?.cancel(); utterance = null; speaking = false; paused = false;
   $('narrate').textContent = '▶ Listen';
 }
@@ -77,7 +116,7 @@ async function playNarration() {
   const id = playbackId, token = generation;
   const onEnd = () => {
     if (id !== playbackId || token !== generation) return;
-    speaking = false; finished = true; $('narrate').textContent = '↻ Listen again';
+    speaking = false; finished = true; highlightWord(-1); $('narrate').textContent = '↻ Listen again';
     if (current.ending) showEnding(); else {updateAmbience();scheduleNext();}
   };
   const onFail = () => {
@@ -86,12 +125,18 @@ async function playNarration() {
   };
   speaking = true; $('narrate').textContent = 'Ⅱ Pause'; $('flow-status').textContent = $('autoplay').checked ? 'The next scene follows after this narration.' : 'Continue whenever you’re ready.'; updateAmbience();
   if (current.audio.url) {
-    audio = new Audio(current.audio.url); audio.volume = Number($('volume').value);
+    audio = new Audio(current.audio.url); audio.playbackRate = narrationSpeed(); audio.preservesPitch = true; audio.ontimeupdate = followAudio; audio.volume = Number($('volume').value);
     audio.onended = onEnd; audio.onerror = onFail; audio.play().then(() => {if (id === playbackId && token === generation) notifyPlaying();}).catch(onFail);
   } else {
     const voice = localVoice(); if (!voice) {onFail();return;}
     utterance = new SpeechSynthesisUtterance(current.narration); utterance.voice = voice;
-    utterance.rate = .85; utterance.volume = Number($('volume').value);
+    utterance.rate = .85 * narrationSpeed();
+    utterance.onboundary = event => {
+      if (id !== playbackId || token !== generation || !speaking) return;
+      let index = 0;
+      while (index + 1 < wordStarts.length && wordStarts[index + 1] <= event.charIndex) index++;
+      highlightWord(index);
+    }; utterance.volume = Number($('volume').value);
     utterance.onstart = () => {if (id === playbackId && token === generation) notifyPlaying();};
     utterance.onend = onEnd; utterance.onerror = onFail; window.speechSynthesis.speak(utterance);
   }
@@ -105,7 +150,7 @@ async function notifyPlaying() {
     $('direction-hint').textContent = directionTarget ? `Your idea joins the next unwritten scene (currently scene ${directionTarget}).` : 'The remaining scenes are already being prepared.';
   } catch(error) { if(token===generation) $('flow-status').textContent = 'The next scene will prepare when you continue.'; }
 }
-function fail(error) {clearTimeout(timer);stopAudio();ambience.stop();$('error-text').textContent=error.message;$('retry').hidden=!session || !!error.safety;screen('error');$(session && !error.safety?'retry':'recover').focus();}
+function fail(error) {clearTimeout(timer);stopAudio();ambience.stop();$('error-text').textContent=error.message;$('retry').hidden=!session || !!error.safety;$('error-title').textContent=error.safety?'Let’s try a gentler dream.':'Our story needs a little moment.';screen('error');if(error.safety)showSafety(error.message);$(session && !error.safety?'retry':'recover').focus();}
 function loading(phase) {
   screen('loading'); $('loading-title').textContent = phases[phase] || phases.writing;
   document.querySelectorAll('.pipeline li').forEach(el => el.classList.toggle('active',el.dataset.stage === phase));
@@ -133,7 +178,7 @@ async function start(event) {
     if (token !== generation) {await api(`/api/sessions/${data.session_id}`,{method:'DELETE'});return;}
     session=data.session_id;await poll(token);
   } catch (error) {
-    if (token === generation) {screen('home');$('home-message').textContent=error.message;$('dream').focus();}
+    if (token === generation) {screen('home');$('home-message').textContent=error.message;$('dream').focus();if(error.safety)showSafety(error.message);}
   } finally {$('start').disabled=false;}
 }
 function showEnding() {
@@ -146,7 +191,7 @@ function render(data) {
   stopAudio(); finished=false; current=data.scene; directionTarget=data.direction_target;
   $('chapter').textContent=`SCENE ${current.scene_id} OF ${data.total_scenes}`;
   $('scene-kicker').textContent=current.ending?'A SOFT PLACE TO REST':'SETTLE INTO YOUR STORY';
-  $('scene-title').textContent=current.title;$('scene-text').textContent=current.story_text;
+  $('scene-title').textContent=current.title;renderWords(current.story_text);
   $('location').textContent=current.location;$('scene-image').src=current.image.url;$('scene-image').alt=current.image.alt;
   $('moral-text').textContent=current.moral || '';
   $('moral-label').hidden=!current.moral;
@@ -237,3 +282,18 @@ const settingDefaults = {'temperature':'0.65','top-p':'0.9','max-tokens':'400'};
 function showSetting(id) { $(id+'-value').textContent = id==='max-tokens' ? $(id).value : Number($(id).value).toFixed(2); }
 Object.keys(settingDefaults).forEach(id => $(id).addEventListener('input',()=>showSetting(id)));
 $('reset-settings').addEventListener('click',()=>{Object.entries(settingDefaults).forEach(([id,value])=>{$(id).value=value;showSetting(id);});});
+
+$('narration-speed').addEventListener('input', () => {
+  const rate = narrationSpeed();
+  $('narration-speed-value').textContent = rate.toFixed(2) + '×';
+  if (audio) audio.playbackRate = rate;
+  if (utterance) $('audio-note').textContent = 'New speed applies when you replay or start the next scene with this device voice.';
+});
+$('read-along').addEventListener('change', () => {
+  highlightWord(-1);
+  if (audio && speaking) followAudio();
+});
+$('safety-close').addEventListener('click', () => {
+  $('safety-dialog').close();
+  if (session) home(); else $('dream').focus();
+});

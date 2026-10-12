@@ -17,6 +17,8 @@ def test_hosted_images_and_fallback(monkeypatch,core,failure):
             assert scene.story_text in body['prompt']
             assert config.dream not in body['prompt']
             assert body['n']==1 and body['quality']=='medium'
+            assert body['model']=='gpt-image-2'
+            assert body['size']=='1536x1024'
             if failure=='http':return httpx.Response(429)
             return httpx.Response(200,json={'data':[{'b64_json':'bad!' if failure else base64.b64encode(png).decode()}]})
         real=httpx.AsyncClient

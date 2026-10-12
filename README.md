@@ -124,7 +124,7 @@ Stories now finish after five scenes. Characters receive personal names and reta
  
 ## Hosted illustrations
 
-DreamVision supports OpenAI GPT Image 2.5 Flare, using one 1024×1024 medium-quality PNG per scene. Set OPENAI_API_KEY in the server environment, then restart ./run.sh. Do not put the key in browser code or paste it into chat. For example, in zsh:
+DreamVision defaults to OpenAI GPT Image 2 (`gpt-image-2`), using one 1536×1024 medium-quality landscape PNG per scene. Its prompt requests textured picture-book artwork, a clear scene action, and layered scenery. Set OPENAI_API_KEY in the server environment, then restart ./run.sh. Do not put the key in browser code or paste it into chat. For example, in zsh:
 
 ```sh
 read -s "OPENAI_API_KEY?OpenAI API key: "
@@ -137,3 +137,11 @@ DREAMTALES_IMAGE_MODEL overrides the model; DREAMTALES_IMAGE_PROVIDER=local disa
 Missing credentials, API errors, invalid image responses, or a 60-second total image deadline use the local vector illustration instead. The caption identifies fallback artwork. No automatic paid-request retries are made. Hosted image integration is covered with mocked API tests; live image quality and latency require a configured API key.
 
 Official API: https://developers.openai.com/api/docs/guides/image-generation
+
+## Listening controls
+
+The player has a 0.60×–1.50× narration speed slider. Recorded Kokoro/Piper audio changes speed immediately with pitch preserved by supporting browsers. Device speech applies the selected speed on replay or the next scene. The setting carries across scenes in the open page.
+
+Read-along highlighting uses approximate word-length-weighted positions against recorded audio time, so changing speed and pausing do not advance the highlight independently of playback. Device voices use browser word-boundary events when available. This is not forced alignment; individual word timing may drift. Highlighting can be switched off.
+
+Advanced generation settings sit below the story button. Rejected prompts and directions open an accessible safety dialog with a clear recovery action; the underlying rule-based safety coverage is unchanged.

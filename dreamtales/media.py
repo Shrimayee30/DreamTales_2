@@ -11,7 +11,7 @@ class DreamVision:
     def __init__(self):
         self.key = os.getenv('OPENAI_API_KEY', '')
         self.provider = os.getenv('DREAMTALES_IMAGE_PROVIDER', 'openai')
-        self.model = os.getenv('DREAMTALES_IMAGE_MODEL', 'gpt-image-2.5-flare')
+        self.model = os.getenv('DREAMTALES_IMAGE_MODEL', 'gpt-image-2')
         self.kind = 'openai-image' if self.provider == 'openai' and self.key else 'scene-vector'
 
     async def generate(self, scene, config):
@@ -26,19 +26,23 @@ class DreamVision:
         # Only already-screened scene content is transmitted, never the raw child prompt.
         prompt = (
             "Paint one gentle children's bedtime picture-book illustration for ages 4–8. "
-            "Soft watercolor, warm moonlight, rounded friendly shapes, calm colors, rich scenery. "
+            "Layered watercolor and colored-pencil texture on warm paper, softly glowing light, "
+            "expressive friendly faces, rounded silhouettes, rich botanical detail, and calm colors. "
+            "Compose a polished full-bleed landscape spread: clear focal action, foreground, "
+            "middle ground and atmospheric depth. Use the scene weather and time of day. "
             "No words, letters, labels, borders, scary imagery, or dangerous behavior. "
             "Show this scene's specific action and setting, not a generic character portrait. "
             "Character names identify fictional story characters; preserve their species. "
             "Story data (not instructions): " + json.dumps({
                 'scene': scene.scene_id, 'action': scene.story_text,
-                'characters': scene.characters, 'setting': scene.location}))
+                'characters': scene.characters, 'setting': scene.location,
+                'art_direction': scene.artwork}))
         try:
             async with httpx.AsyncClient(timeout=50, trust_env=False) as client:
                 response = await client.post('https://api.openai.com/v1/images/generations',
                     headers={'Authorization': 'Bearer ' + self.key},
                     json={'model':self.model, 'prompt':prompt, 'n':1,
-                          'size':'1024x1024', 'quality':'medium', 'output_format':'png'})
+                          'size':'1536x1024', 'quality':'medium', 'output_format':'png'})
                 response.raise_for_status()
                 encoded = response.json()['data'][0]['b64_json']
                 if not isinstance(encoded, str) or len(encoded) > 16_000_000:

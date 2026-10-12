@@ -8,10 +8,10 @@ function harness() {
   const elements = {};
   const el = id => elements[id] ||= {id,hidden:false,value:'',checked:true,disabled:false,textContent:'',dataset:{},
     listeners:{},classList:{toggle:()=>false},addEventListener(type,fn){this.listeners[type]=fn;},
-    setAttribute(){},querySelector(){return el(id+'-span');},focus(){document.activeElement=this;},
-    reportValidity(){return true;},showModal(){},close(){}};
+    children:[],append(child){this.children.push(child);},setAttribute(){},querySelector(){return el(id+'-span');},focus(){document.activeElement=this;},
+    reportValidity(){return true;},showModal(){this.open=true;},close(){this.open=false;}};
   const document = {hidden:false,activeElement:null,getElementById:el,
-    querySelector:el,querySelectorAll:()=>[],listeners:{},addEventListener(type,fn){this.listeners[type]=fn;}};
+    createElement:()=>({textContent:'',classList:{toggle(){}}}),createTextNode:text=>({textContent:text}),querySelector:el,querySelectorAll:()=>[],listeners:{},addEventListener(type,fn){this.listeners[type]=fn;}};
   const timers = new Map(); let serial=0; const requests=[],players=[];
   class Audio {constructor(url){this.url=url;players.push(this);}play(){return Promise.resolve();}pause(){}}
   class Ambience {async unlock(){} update(){} stop(){} }
@@ -143,4 +143,35 @@ test('stale final audio cannot open the end slide after returning home',async()=
   const h=harness();await h.show({scene_id:5,ending:true,moral:'Be kind.'});
   const ended=h.players[0].onended;await h.run('home()');ended();
   assert.equal(h.el('end-slide').hidden,true);
+});
+
+test('speed changes apply immediately and persist across scenes and replay',async()=>{
+  const h=harness();await h.show();
+  h.el('narration-speed').value='0.65';h.el('narration-speed').listeners.input();
+  assert.equal(h.players[0].playbackRate,.65);
+  assert.equal(h.el('narration-speed-value').textContent,'0.65×');
+  h.el('replay').listeners.click();await new Promise(r=>setImmediate(r));
+  assert.equal(h.players.at(-1).playbackRate,.65);
+  await h.show({scene_id:2});assert.equal(h.players.at(-1).playbackRate,.65);
+});
+test('highlight follows media time, pauses, clears, and can be disabled',async()=>{
+  const h=harness();await h.show();const player=h.players[0];
+  player.duration=12;player.currentTime=1;player.ontimeupdate();
+  assert.equal(h.run('highlightedWord'),0);
+  player.currentTime=11;player.ontimeupdate();assert.equal(h.run('highlightedWord'),2);
+  h.run('pauseAudio()');player.currentTime=0;player.ontimeupdate();
+  assert.equal(h.run('highlightedWord'),2);
+  h.el('read-along').checked=false;h.el('read-along').listeners.change();
+  assert.equal(h.run('highlightedWord'),-1);
+  await h.run('home()');assert.equal(player.ontimeupdate,null);
+});
+test('unsafe initial prompt opens a clear dialog and keeps the prompt editable',async()=>{
+  const h=harness();h.el('dream').value='A fox with beer';
+  h.context.fetch=async()=>({ok:false,status:422,json:async()=>({code:'child_safety',detail:'This is not safe for kids.'})});
+  await h.run('start({preventDefault(){}})');
+  assert.equal(h.el('safety-dialog').open,true);
+  assert.match(h.el('safety-message').textContent,/not safe/);
+  assert.equal(h.el('home').hidden,false);
+  h.el('safety-close').listeners.click();assert.equal(h.el('safety-dialog').open,false);
+  assert.equal(h.document.activeElement,h.el('dream'));
 });

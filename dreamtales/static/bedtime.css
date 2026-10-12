@@ -10,3 +10,16 @@ body.bedtime{--paper:#111f29;--ink:#eee8db;--muted:#b2bebd;--green:#ddc49b;--ora
 .moral-card{padding:28px 36px;border:1px solid #57616a;border-radius:24px;background:#ffffff06}
 #moral-text{font-family:Georgia,serif;font-size:clamp(24px,4vw,34px);line-height:1.5;margin:16px 0;color:#f7efdf}
 .sleep-well{margin:30px 0;color:#b8c9cb}.end-actions{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+
+/* Listening controls and a prominent, calm safety alert. */
+.speed-control{display:grid;grid-template-columns:1fr auto;gap:10px;margin:22px 0 16px;font-size:13px;color:var(--muted)}
+.speed-control input{grid-column:1/-1;width:100%}.speed-control output{color:var(--ink);font-variant-numeric:tabular-nums}
+.speed-control span{grid-column:1/-1;font-size:11px}.read-along-toggle{margin-bottom:10px}
+#scene-text{white-space:pre-wrap}#scene-text span{border-radius:5px}
+#scene-text .spoken-word{background:#e7cca0;color:#172936;box-shadow:0 0 0 3px #e7cca0}
+.model-settings{margin-top:10px;padding-bottom:20px}.model-settings summary{font-size:13px;color:var(--muted)}
+.safety-dialog{max-width:480px;width:calc(100% - 32px);border:2px solid #e7bd8f;border-radius:24px;padding:32px;color:var(--ink);text-align:center}
+.safety-dialog::backdrop{background:#07131dcc;backdrop-filter:blur(5px)}
+.safety-symbol{display:block;font-size:42px;color:#e7bd8f}.safety-dialog h2{font:30px/1.2 Georgia,serif}
+.safety-dialog p{line-height:1.6;color:var(--muted)}#safety-message{color:#ffe4c6;font-weight:600;font-size:18px}
+.safety-dialog button{margin-top:12px}.narration{flex-wrap:wrap}

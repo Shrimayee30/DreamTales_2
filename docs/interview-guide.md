@@ -10,7 +10,7 @@ Verified against the local app and Ollama on October 12, 2026.
 | Story model runtime | Local Ollama, Q4_K_M quantization, 8,192-token context (reported by Ollama) | Runs the model on the development Mac. |
 | DreamTunes | Kokoro v1.0 ONNX, af_heart voice by default, speed 0.88 | Produces local narration using a persistent CPU worker. |
 | DreamVision — active | Procedural SVG renderer | Draws each scene from its characters, location and weather; this is not an image model. |
-| DreamVision — integrated, inactive | OpenAI gpt-image-2.5-flare | Hosted image requests are implemented but need OPENAI_API_KEY. Live quality and latency are not yet verified. |
+| DreamVision — integrated, inactive | OpenAI gpt-image-2 | Landscape picture-book image requests are implemented but need OPENAI_API_KEY. Live quality and latency are not yet verified. |
 | Background sound | Browser Web Audio synthesis | Produces rain, wind, crickets and waves. No generative audio model. |
 | Safety | Local rules and schema validation | Screens requests and scenes; not a trained moderation model or complete child-safety guarantee. |
 
